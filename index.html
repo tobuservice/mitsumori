@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>建設業見積作成システム</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                    </svg>
+                </div>
+                <div class="logo-text">建設業見積作成システム</div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="tab-container">
+                <div class="tab active" data-tab="input">見積入力</div>
+                <div class="tab" data-tab="preview">見積プレビュー</div>
+                <div class="tab" data-tab="settings">設定</div>
+            </div>
+
+            <div id="storageWarning" class="alert alert-warning hidden">
+                <strong>注意:</strong> お使いの環境ではデータの保存機能が制限されている可能性があります。会社情報設定が保存されない場合がありますが、見積作成機能自体は利用可能です。
+            </div>
+
+            <div id="inputTab" class="tab-content active">
+                <form id="estimateForm">
+                    <div class="card">
+                        <div class="card-title">
+                            <div class="card-title-icon">1</div>
+                            <h2>基本情報</h2>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="client">見積提出先 <span class="form-required">*</span></label>
+                                <input type="text" id="client" name="client" placeholder="例: 株式会社〇〇" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="project">件名 <span class="form-required">*</span></label>
+                                <input type="text" id="project" name="project" placeholder="例: △△邸 新築工事" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="estimateNumber">見積番号</label>
+                                <input type="text" id="estimateNumber" name="estimateNumber" placeholder="例: Q-20250502-1234">
+                                <div class="tooltip">
+                                    <span class="help-icon">?</span>
+                                    <span class="tooltip-text">空欄の場合は「Q-日付-連番」の形式で自動生成されます。</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="estimateDate">見積日</label>
+                                <input type="date" id="estimateDate" name="estimateDate">
+                            </div>
+                            <div class="form-group">
+                                <label for="expiryDays">有効期限（日数）</label>
+                                <input type="number" id="expiryDays" name="expiryDays" value="30" min="1" step="1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">
+                            <div class="card-title-icon">2</div>
+                            <h2>明細情報</h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="item-table" id="itemTable">
+                                <thead>
+                                    <tr>
+                                        <th class="number-col">No.</th>
+                                        <th>摘要</th>
+                                        <th class="qty-col">数量</th>
+                                        <th class="unit-col">単位</th>
+                                        <th class="cost-col">原価</th>
+                                        <th class="markup-rate-col">掛け率</th>
+                                        <th class="amount-col">金額</th>
+                                        <th class="action-col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="itemTableBody">
+                                    <tr>
+                                        <td>1</td>
+                                        <td><input type="text" name="description[]" placeholder="商品/サービス名" required></td>
+                                        <td><input type="number" name="quantity[]" value="1" min="1" step="0.01" required></td>
+                                        <td>
+                                            <select name="unit[]">
+                                                <option value="式">式</option>
+                                                <option value="基">基</option>
+                                                <option value="組">組</option>
+                                                <option value="枚">枚</option>
+                                                <option value="本">本</option>
+                                                <option value="個">個</option>
+                                                <option value="台">台</option>
+                                                <option value="m">m</option>
+                                                <option value="m2">m2</option>
+                                                <option value="m3">m3</option>
+                                                <option value="kg">kg</option>
+                                                <option value="t">t</option>
+                                                <option value="箇所">箇所</option>
+                                                <option value="時間">時間</option>
+                                                <option value="日">日</option>
+                                                <option value="ヶ月">ヶ月</option>
+                                            </select>
+                                        </td>
+                                        <td><input type="number" name="cost[]" placeholder="原価" step="any" required></td>
+                                        <td><input type="number" name="markupRate[]" value="1.0" step="0.01" required></td>
+                                        <td><input type="text" name="amount[]" readonly></td>
+                                        <td><button type="button" class="delete-btn" disabled>×</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <button type="button" id="addRowBtn" class="add-row-btn">+ 明細を追加</button>
+
+                        <div class="totals-container">
+                            <div class="total-row">
+                                <div class="total-label">小計（税抜）:</div>
+                                <div class="total-value" id="subtotal">¥0</div>
+                            </div>
+                            <div class="total-row">
+                                <div class="total-label">消費税（10%）:</div>
+                                <div class="total-value" id="tax">¥0</div>
+                            </div>
+                            <div class="total-row final-total">
+                                <div class="total-label">合計（税込）:</div>
+                                <div class="total-value" id="total">¥0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">
+                            <div class="card-title-icon">3</div>
+                            <h2>備考</h2>
+                        </div>
+                        <div class="form-group">
+                            <label for="notes">備考（見積書に表示されます。改行で複数行入力可）</label>
+                            <textarea id="notes" name="notes" rows="5" placeholder="例:&#10;・本見積の有効期限は発行日より30日間とします。&#10;・別途、現場管理費が必要となる場合があります。"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="centered-buttons">
+                        <button type="submit" id="calculateBtn">見積を計算する</button>
+                    </div>
+                </form>
+
+                <div id="estimateResult" class="estimate-result hidden">
+                    <h2>見積計算結果</h2>
+                    <div id="calculatedResultArea">
+                        <h4>計算結果概要</h4>
+                        <div>
+                            <span>見積金額 (税抜):</span>
+                            <span id="resultSubtotal">¥0</span>
+                        </div>
+                        <div>
+                            <span>見積金額 (税込):</span>
+                            <span id="resultTotal">¥0</span>
+                        </div>
+                        <hr>
+                        <div>
+                            <span>原価合計:</span>
+                            <span id="resultTotalCost">¥0</span>
+                        </div>
+                        <div>
+                            <span>粗利率:</span>
+                            <span id="resultGrossMarginPercent">-%</span>
+                        </div>
+                    </div>
+
+                    <div class="centered-buttons" style="margin-top: 30px;">
+                        <button id="previewBtn" class="secondary">見積書をプレビュー</button>
+                        <button id="downloadBtn">PDFダウンロード</button>
+                        <button id="printBtn" class="secondary">印刷</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="previewTab" class="tab-content">
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h2>見積書プレビュー</h2>
+                        <div class="centered-buttons hidden" id="previewButtons">
+                            <button id="previewDownloadBtn">PDFダウンロード</button>
+                            <button id="previewPrintBtn" class="secondary">印刷</button>
+                        </div>
+                    </div>
+                    <div id="previewContainer" class="estimate-preview">
+                        <p>見積入力タブで情報を入力し、「見積を計算する」ボタンをクリックすると、ここにプレビューが表示されます。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="settingsTab" class="tab-content">
+                <div class="card">
+                    <div class="card-title">
+                        <h2>会社情報設定</h2>
+                    </div>
+                    <p style="margin-bottom: 20px; font-size: 14px; color: var(--dark-gray);">ここで入力された情報は、見積書プレビューやPDF出力時に反映されます。入力内容はブラウザに保存されます（プライベートブラウジングモード等では保存されない場合があります）。</p>
+                    <form id="companySettingsForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="companyName">会社名</label>
+                                <input type="text" id="companyName" name="companyName" placeholder="例: 株式会社○○">
+                            </div>
+                            <div class="form-group">
+                                <label for="companyPostal">郵便番号</label>
+                                <input type="text" id="companyPostal" name="companyPostal" placeholder="例: 105-0011 (ハイフン任意)">
+                            </div>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="companyAddress">住所</label>
+                            <input type="text" id="companyAddress" name="companyAddress" placeholder="例: 東京都港区○○ ×丁目○−○">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="companyPhone">電話番号</label>
+                                <input type="text" id="companyPhone" name="companyPhone" placeholder="例: 00-0000-0000">
+                            </div>
+                            <div class="form-group">
+                                <label for="companyFax">FAX番号</label>
+                                <input type="text" id="companyFax" name="companyFax" placeholder="例: 00-0000-0000">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group half-width">
+                                <label for="companyLogo">会社ロゴ画像</label>
+                                <input type="file" id="companyLogo" name="companyLogo" accept="image/png, image/jpeg, image/gif">
+                                <div class="logo-upload-container">
+                                    <img id="companyLogoPreview" class="company-logo-preview hidden" src="" alt="ロゴプレビュー">
+                                    <button type="button" id="removeLogoBtn" class="secondary hidden" style="margin-top: 5px; font-size: 12px; padding: 4px 8px;">画像を削除</button>
+                                </div>
+                                <small style="display: block; margin-top: 5px; color: var(--dark-gray);">推奨: 横長、背景透過PNG</small>
+                            </div>
+                            <div class="form-group half-width">
+                                <label for="companyStamp">会社印影画像</label>
+                                <input type="file" id="companyStamp" name="companyStamp" accept="image/png, image/jpeg">
+                                <div class="logo-upload-container">
+                                    <img id="companyStampPreview" class="company-logo-preview hidden" src="" alt="印影プレビュー">
+                                    <button type="button" id="removeStampBtn" class="secondary hidden" style="margin-top: 5px; font-size: 12px; padding: 4px 8px;">画像を削除</button>
+                                </div>
+                                <small style="display: block; margin-top: 5px; color: var(--dark-gray);">推奨: 正方形、背景透過PNG</small>
+                            </div>
+                        </div>
+                        <div class="centered-buttons">
+                            <button type="submit">設定を保存</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">
+                        <h2>詳細設定</h2>
+                    </div>
+                    <div class="form-group">
+                        <label for="debugMode" style="display: inline-block; margin-right: 10px;">デバッグモード</label>
+                        <input type="checkbox" id="debugMode" style="width: auto; vertical-align: middle;">
+                        <span style="font-size: 14px; color: var(--dark-gray);">(PDF生成等で問題が発生した場合にお試しください)</span>
+                        <div id="debugPanel" class="debug-panel">
+                            <div style="margin-bottom: 5px; font-weight: bold; border-bottom: 1px solid #666; padding-bottom: 3px;">デバッグログ</div>
+                            <div id="debugLogs"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pdfTimeout">PDF生成タイムアウト（秒）</label>
+                        <input type="number" id="pdfTimeout" min="5" max="120" step="1" value="15">
+                        <small style="display: block; margin-top: 5px; color: var(--dark-gray);">PDF生成に時間がかかる場合に長く設定します (5～120秒)。</small>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" id="clearStorageBtn" class="danger">全設定をリセット</button>
+                        <small style="display: block; margin-top: 5px; color: var(--dark-gray);">会社情報、詳細設定、デバッグモードの状態を初期化します。</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="pdfContent" class="pdf-document">
+        <div id="pdfEstimateSheet" class="estimate-sheet">
+        </div>
+    </div>
+
+    <div id="loadingSpinner" class="spinner hidden">
+        <div class="spinner-circle"></div>
+        <div class="spinner-text">処理中...</div>
+        <div class="spinner-actions" id="spinnerActions">
+            <button id="cancelPdfBtn" class="warning">キャンセル</button>
+            <button id="alternativePdfBtn" class="secondary">代替手段</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            © <span id="copyrightYear">2025</span> 建設業見積作成システム All Rights Reserved.
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/calculation.js"></script>
+    <script src="js/pdf-generator.js"></script>
+    <script src="js/ui.js"></script>
+</body>
+</html>
