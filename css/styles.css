@@ -1,0 +1,956 @@
+:root {
+    --main-color: #2c5eff;
+    --main-color-light: #5a7fff;
+    --main-color-dark: #1a45d9;
+    --sub-color: #001350;
+    --sub-color-light: #002080;
+    --white: #ffffff;
+    --gray: #f9f9f9;
+    --light-gray: #f0f0f0;
+    --border-gray: #ddd;
+    --dark-gray: #6e7a8a;
+    --black: #222222;
+    --success: #4caf50;
+    --warning: #ff9800;
+    --danger: #f44336;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'メイリオ', sans-serif;
+}
+
+body {
+    background-color: var(--gray);
+    color: var(--black);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+header {
+    background-color: var(--white);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo-icon {
+    width: 40px;
+    height: 40px;
+    background-color: var(--main-color);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    margin-right: 10px;
+}
+
+.logo-text {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--sub-color);
+}
+
+main {
+    padding: 40px 0;
+}
+
+.tab-container {
+    display: flex;
+    margin-bottom: 20px;
+    background-color: var(--white);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tab {
+    flex: 1;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.tab.active {
+    background-color: var(--white);
+    border-bottom: 3px solid var(--main-color);
+    color: var(--main-color);
+}
+
+.tab:hover:not(.active) {
+    background-color: var(--light-gray);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.card {
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.card-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--light-gray);
+    padding-bottom: 10px;
+}
+
+.card-title-icon {
+    width: 30px;
+    height: 30px;
+    background-color: var(--main-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+h1, h2, h3 {
+    color: var(--sub-color);
+}
+h4 {
+     color: var(--sub-color);
+     margin-top: 0;
+ }
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -10px;
+    margin-right: -10px;
+    margin-bottom: 10px;
+}
+
+.form-group {
+    padding: 0 10px;
+    margin-bottom: 20px;
+    flex: 1;
+    min-width: 250px;
+}
+
+.form-group.full-width {
+    flex: 0 0 100%;
+}
+
+.form-group.half-width {
+    flex: 0 0 50%;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--sub-color);
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-gray);
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.2s;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--main-color);
+    box-shadow: 0 0 0 3px rgba(44, 94, 255, 0.2);
+}
+
+.form-error {
+    color: var(--danger);
+    font-size: 14px;
+    margin-top: 5px;
+}
+.form-required {
+     color: var(--danger);
+     font-size: 0.9em;
+     margin-left: 4px;
+ }
+
+button {
+    background-color: var(--main-color);
+    color: var(--white);
+    border: none;
+    border-radius: 6px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: var(--main-color-dark);
+}
+
+button:disabled {
+    background-color: var(--dark-gray);
+    cursor: not-allowed;
+}
+
+button.secondary {
+    background-color: var(--white);
+    color: var(--main-color);
+    border: 1px solid var(--main-color);
+}
+
+button.secondary:hover {
+    background-color: #f0f5ff;
+}
+
+button.danger {
+    background-color: var(--white);
+    color: var(--danger);
+    border: 1px solid var(--danger);
+}
+
+button.danger:hover {
+    background-color: #fff5f5;
+}
+
+button.warning {
+    background-color: var(--white);
+    color: var(--warning);
+    border: 1px solid var(--warning);
+}
+
+button.warning:hover {
+    background-color: #fffaf0;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.centered-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.wide-button {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    display: block;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* 明細テーブル */
+.item-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.item-table th {
+    background-color: var(--light-gray);
+    border: 1px solid var(--border-gray);
+    padding: 12px 8px;
+    text-align: left;
+    font-weight: bold;
+    color: var(--sub-color);
+    white-space: nowrap;
+}
+
+.item-table td {
+    border: 1px solid var(--border-gray);
+    padding: 10px 8px;
+    vertical-align: middle;
+}
+
+.item-table input, .item-table select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.item-table .number-col { width: 5%; text-align: center;}
+.item-table .qty-col { width: 8%; text-align: right;}
+.item-table .unit-col { width: 8%; }
+.item-table .cost-col { width: 15%; text-align: right;}
+.item-table .markup-rate-col { width: 10%; text-align: right;}
+.item-table .amount-col { width: 15%; text-align: right;}
+.item-table .action-col { width: 5%; text-align: center; }
+
+.delete-btn {
+    background-color: var(--danger);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+}
+.delete-btn:disabled {
+     background-color: var(--light-gray);
+     border: 1px solid var(--border-gray);
+     color: var(--dark-gray);
+     cursor: not-allowed;
+ }
+
+
+.add-row-btn {
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--success);
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.add-row-btn:hover {
+    background-color: #3d8b40;
+}
+
+/* 合計部分 */
+.totals-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-top: 20px;
+    border-top: 2px solid var(--light-gray);
+    padding-top: 20px;
+}
+
+.total-row {
+    display: flex;
+    justify-content: flex-end;
+    align-items: baseline;
+    margin-bottom: 10px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.total-label {
+    flex: 1;
+    font-weight: bold;
+    text-align: right;
+    padding-right: 20px;
+    color: var(--sub-color);
+}
+
+.total-value {
+    width: 160px;
+    text-align: right;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.final-total .total-label {
+     font-size: 1.1em;
+ }
+.final-total .total-value {
+    font-size: 1.3em;
+    color: var(--main-color);
+}
+.final-total {
+    border-top: 1px solid var(--border-gray);
+    padding-top: 10px;
+    margin-top: 5px;
+}
+
+/* 見積結果カード */
+.estimate-result {
+    border: 1px solid var(--main-color-light);
+    border-radius: 8px;
+    background-color: #f8faff;
+    padding: 20px 30px;
+    margin-top: 30px;
+    position: relative;
+}
+
+.estimate-result h2 {
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--main-color-light);
+    padding-bottom: 10px;
+}
+
+#calculatedResultArea {
+     margin-top: 20px;
+     padding: 20px;
+     background-color: #f0f5ff;
+     border: 1px solid var(--main-color-light);
+     border-radius: 8px;
+ }
+ #calculatedResultArea h4 {
+     margin-bottom: 15px;
+     border-bottom: 1px solid var(--main-color-light);
+     padding-bottom: 8px;
+ }
+ #calculatedResultArea > div {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 8px 15px;
+      align-items: center;
+      margin-bottom: 10px;
+  }
+ #calculatedResultArea > div > span:first-child {
+      font-weight: bold;
+      text-align: right;
+      color: var(--sub-color);
+  }
+ #calculatedResultArea > div > span:last-child {
+      font-weight: bold;
+      font-size: 1.1em;
+      color: var(--black);
+  }
+  #calculatedResultArea hr {
+      margin: 15px 0;
+      border: 0;
+      border-top: 1px dashed #ccc;
+  }
+ #calculatedResultArea > div:nth-of-type(3) > span:first-child,
+ #calculatedResultArea > div:nth-of-type(3) > span:last-child {
+      font-weight: normal;
+      font-size: 1em;
+      color: var(--dark-gray);
+  }
+  #calculatedResultArea > div:nth-of-type(2) > span:last-child {
+       font-size: 1.2em;
+       color: var(--main-color);
+   }
+   #calculatedResultArea > div:nth-of-type(4) > span:last-child {
+        font-size: 1.1em;
+    }
+
+/* ローディングスピナー */
+.spinner {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.85);
+    z-index: 1000;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.spinner-circle {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(0, 0, 0, 0.1);
+    border-left-color: var(--main-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.spinner-text {
+    margin-top: 20px;
+    font-size: 16px;
+    color: var(--sub-color);
+    font-weight: bold;
+}
+
+.spinner-actions {
+    margin-top: 25px;
+    display: none;
+    gap: 15px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* モーダル */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: auto;
+}
+
+.modal-content {
+    background-color: var(--white);
+    margin: 50px auto;
+    padding: 30px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    color: var(--dark-gray);
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: var(--black);
+}
+
+footer {
+    background-color: var(--white);
+    border-top: 1px solid var(--light-gray);
+    padding: 20px 0;
+    text-align: center;
+    font-size: 14px;
+    color: var(--dark-gray);
+    margin-top: 40px;
+}
+
+/* 設定タブ用のスタイル */
+.company-logo-preview {
+    max-width: 200px;
+    max-height: 100px;
+    margin-top: 10px;
+    display: block;
+    border: 1px solid var(--border-gray);
+    padding: 5px;
+    background-color: var(--light-gray);
+    object-fit: contain;
+}
+
+.logo-upload-container {
+    margin-top: 10px;
+}
+
+/* 見積書プレビュー用のスタイル */
+.estimate-preview {
+    background-color: var(--white);
+    padding: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+/* PDF生成用の非表示要素スタイル */
+.pdf-document {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 15mm;
+    margin: 0 auto;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: none;
+    position: absolute;
+    left: -9999px;
+    top: auto;
+}
+
+/* PDF内の見積書スタイル */
+.estimate-sheet {
+    width: 100%;
+    font-size: 10px;
+    line-height: 1.4;
+    color: #333;
+}
+
+.estimate-header {
+    margin-bottom: 20px;
+    position: relative;
+    height: 80px;
+}
+
+.estimate-title {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #000;
+}
+
+.client-info {
+    margin-bottom: 15px;
+    border-bottom: 1px solid #000;
+    padding-bottom: 5px;
+    width: 60%;
+}
+
+.client-name {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #000;
+}
+
+.estimate-info {
+    margin-bottom: 15px;
+}
+.estimate-info table td {
+    padding: 2px 0;
+    font-size: 11px;
+}
+
+.estimate-amount {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 15px;
+    padding: 8px;
+    border: 1px solid #000;
+    background-color: #f2f2f2;
+    color: #000;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.company-info {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    text-align: right;
+    font-size: 10px;
+    line-height: 1.4;
+    width: 45%;
+}
+.company-info div {
+     margin-bottom: 1px;
+ }
+
+.company-logo { /* PDF内のロゴ */
+    max-width: 150px;
+    max-height: 40px;
+    /* position, top, right は JS側で追加 */
+}
+
+.company-stamp { /* PDF内の印影 */
+    width: 60px;
+    height: 60px;
+    opacity: 0.85;
+     /* position, top, right は JS側で追加 */
+}
+
+.estimate-detail { /* PDF内の明細テーブル */
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+}
+
+.estimate-detail th,
+.estimate-detail td {
+    border: 1px solid #333;
+    padding: 4px 5px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.estimate-detail th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    text-align: center;
+    font-size: 9px;
+    white-space: nowrap;
+}
+ /* PDF内テーブルの数値列の右揃え */
+.estimate-detail td:nth-child(3), /* 数量 */
+.estimate-detail td:nth-child(5), /* 単価 */
+.estimate-detail td:nth-child(6) { /* 金額 */
+     text-align: right;
+ }
+ /* PDF内テーブルのNo.と単位列の中央揃え */
+.estimate-detail td:nth-child(1), /* No. */
+.estimate-detail td:nth-child(4) { /* 単位 */
+     text-align: center;
+ }
+
+.estimate-totals { /* PDF内の合計欄テーブル */
+    width: 40%;
+    border-collapse: collapse;
+    margin-top: 5px;
+    margin-left: auto;
+    margin-bottom: 10px;
+    font-size: 10px;
+}
+
+.estimate-totals td {
+    padding: 4px 5px;
+    text-align: right;
+    border: 1px solid #333;
+}
+.estimate-totals tr:last-child td {
+    font-weight: bold;
+    background-color: #f2f2f2;
+}
+ .estimate-totals tr td:first-child {
+      text-align: center;
+      background-color: #f2f2f2;
+  }
+
+.estimate-notes { /* PDF内の備考欄 */
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-top: 15px;
+    background-color: #f9f9f9;
+    font-size: 9px;
+    line-height: 1.3;
+}
+
+.notes-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.note-item {
+    margin-bottom: 2px;
+}
+
+/* PDF内での長いテキストの折り返し */
+.long-text {
+    word-break: break-all;
+}
+
+/* ヘルプアイコン */
+.help-icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-color: var(--dark-gray);
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 16px;
+    font-size: 12px;
+    margin-left: 5px;
+    cursor: help;
+    vertical-align: middle;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: rgba(0,0,0,0.8);
+    color: #fff;
+    text-align: left;
+    border-radius: 6px;
+    padding: 8px 10px;
+    position: absolute;
+    z-index: 10;
+    bottom: 130%;
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 12px;
+    line-height: 1.4;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+ .tooltip .tooltip-text::after {
+     content: "";
+     position: absolute;
+     top: 100%;
+     left: 50%;
+     margin-left: -5px;
+     border-width: 5px;
+     border-style: solid;
+     border-color: rgba(0,0,0,0.8) transparent transparent transparent;
+ }
+
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* アラート */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-warning {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+
+.alert-info {
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+
+.alert-danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
+/* デバッグパネル */
+.debug-panel {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 300px;
+    max-height: 200px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    font-family: monospace;
+    font-size: 12px;
+    padding: 10px;
+    overflow-y: auto;
+    z-index: 10000;
+    display: none;
+}
+
+.debug-log {
+    margin-bottom: 5px;
+    border-bottom: 1px solid #444;
+    padding-bottom: 5px;
+    word-break: break-all;
+}
+
+.debug-error { color: #ff6b6b; }
+.debug-warn { color: #feca57; }
+.debug-info { color: #54a0ff; }
+
+/* Responsive table wrapper */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 1.5em;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .container { padding: 0 15px; }
+    main { padding: 20px 0; }
+    .card { padding: 20px; }
+
+    .form-row { flex-direction: column; margin-left: 0; margin-right: 0; }
+    .form-group { min-width: 100%; padding: 0 5px; }
+     .form-group.half-width { flex: 0 0 100%; }
+
+    .modal-content { width: 95%; margin: 20px auto; padding: 20px; }
+
+     #calculatedResultArea > div { grid-template-columns: 1fr auto; gap: 5px 10px; }
+      #calculatedResultArea > div > span:first-child { text-align: left; }
+
+     .item-table { min-width: 750px; font-size: 14px; }
+     .item-table th, .item-table td { padding: 8px 6px; white-space: nowrap; }
+     .item-table .cost-col,
+     .item-table .markup-rate-col,
+     .item-table .amount-col { min-width: 90px; }
+
+     .totals-container { padding-top: 15px; }
+     .total-row { max-width: 100%; }
+     .total-value { width: 120px; }
+}
+
+/* 印刷用スタイル */
+@media print {
+    body { background-color: white; }
+     header, footer, .tab-container, #estimateForm, #estimateResult, #settingsTab, #storageWarning, .add-row-btn, .debug-panel, .spinner { display: none !important; }
+     main { padding: 0; }
+     .container { max-width: 100%; padding: 0; }
+     .card { box-shadow: none; border: none; padding: 0; margin: 0; }
+
+     #previewTab { display: block !important; } /* !important で強制表示 */
+     #inputTab, #settingsTab { display: none !important;} /* 他のタブは非表示 */
+     .estimate-preview, .estimate-preview * { visibility: visible; }
+     .estimate-preview {
+         position: static; width: 100%; box-shadow: none;
+         border: none; padding: 0; margin: 0; font-size: 10pt;
+     }
+
+     /* PDF生成用スタイルを印刷にも適用 */
+     .estimate-sheet { font-size: 9pt; line-height: 1.3; color: #000; }
+     .estimate-header { margin-bottom: 15mm; height: auto; }
+     .estimate-title { font-size: 18pt; margin-bottom: 15mm; }
+     .client-info { margin-bottom: 10mm; width: 100%; }
+     .client-name { font-size: 12pt; }
+     .company-info { position: static; text-align: right; width: 100%; margin-top: -20mm; font-size: 9pt; }
+     .company-logo { display: none; }
+     .company-stamp { display: none; }
+     .estimate-info { margin-bottom: 8mm; }
+     .estimate-info table td { font-size: 10pt; padding: 1mm 0; }
+     .estimate-amount { font-size: 12pt; margin-bottom: 8mm; width: 100%; text-align: center; }
+     .estimate-detail { margin-bottom: 5mm; }
+     .estimate-detail th, .estimate-detail td { padding: 1.5mm 2mm; border: 1px solid #333; font-size: 9pt; }
+     .estimate-totals { width: 50%; margin-top: 2mm; margin-bottom: 8mm; font-size: 9pt; }
+     .estimate-totals td { padding: 1.5mm 2mm; }
+     .estimate-notes { margin-top: 8mm; font-size: 8pt; line-height: 1.2; background-color: transparent; border: 1px solid #ccc; }
+
+     tr { page-break-inside: avoid; }
+     thead { display: table-header-group; }
+}
